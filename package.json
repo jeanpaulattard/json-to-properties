@@ -1,0 +1,32 @@
+{
+  "name": "json-to-properties",
+  "version": "0.0.0",
+  "description": "A standalone util to transform language files in JSON format, into .properties files.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "json-to-properties": "src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeanpaulattard/json-to-properties.git"
+  },
+  "keywords": [
+    "json",
+    "properties",
+    "language",
+    "translations",
+    "i18n"
+  ],
+  "author": "JeanPaul Attard",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jeanpaulattard/json-to-properties/issues"
+  },
+  "homepage": "https://github.com/jeanpaulattard/json-to-properties#readme",
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
+}
