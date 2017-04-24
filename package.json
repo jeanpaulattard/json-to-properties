@@ -4,7 +4,7 @@
   "description": "A standalone util to transform language files in JSON format, into .properties files.",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "bin": {
     "json-to-properties": "src/index.js"
@@ -27,6 +27,10 @@
   },
   "homepage": "https://github.com/jeanpaulattard/json-to-properties#readme",
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "2.9.0"
+  },
+  "devDependencies": {
+    "mocha": "3.2.0",
+    "sinon": "2.1.0"
   }
 }

@@ -1,8 +1,14 @@
 var fs = require('fs');
 
+/**
+ * Returns an array of file names ending in .json found in the specified directory.
+ *
+ * @param dir The directory from where the files should be returned
+ * @returns {Array} An array of file names ending in .json
+ */
 exports.getJsonFiles = function (dir) {
     if (!fs.existsSync(dir)) {
-        console.log('The src directory [' + dir + '] does not exist.');
+        console.error('The src directory [ ' + dir + ' ] does not exist.');
         return;
     }
 
@@ -23,16 +29,31 @@ exports.getJsonFiles = function (dir) {
     return jsonFiles;
 };
 
+/**
+ * Given a directory and file name, reads the content of the file and returns it as utf8 encoded string.
+ *
+ * @param dir The directory the file is located
+ * @param file The name of the file to read
+ * @returns The file data represented as a utf8 encoded string
+ */
 exports.getFileDataAsString = function (dir, file) {
     var fullPath = dir + '\\' + file;
     if (!fs.existsSync(fullPath)) {
-        console.log('The file identified by the full path [' + fullPath + '] is not found.');
+        console.error('The file identified by the full path [ ' + fullPath + ' ] is not found.');
         return;
     }
 
     return fs.readFileSync(fullPath, 'utf8');
 };
 
+/**
+ * Writes each item on the entries array in a .properties file whose name is the same as the provided file name, within
+ * the provided directory.
+ *
+ * @param dir The directory where to save the file
+ * @param file The full file name including .json extension
+ * @param entries An array of strings to write to the file
+ */
 exports.writeAsProperties = function (dir, file, entries) {
     if (!fs.existsSync(dir)) {
         console.error('The output directory [ ' + dir + ' ] is not a valid directory');

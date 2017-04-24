@@ -14,7 +14,7 @@ var parser = require('./parser');
  *     timestamp. Defaults to false.
  *  - timestamp: A flag identifying if a timestamp is to be prepended to the resultant files. Defaults to false.
  */
-var processOptions = function (options) {
+exports.processOptions = function (options) {
     var config = options.config;
 
     if (!options.reverse) {
@@ -49,16 +49,16 @@ exports.process = function (options) {
 
     // The default options
     var _options = {
-        config: {src: path, dist: path},
+        config: { src: path, dist: path },
         reverse: false,
         timestamp: false
     };
 
     for (var key in options) {
         if (options.hasOwnProperty(key)) {
-            _options[key] = options[key];
+            _options[ key ] = options[ key ];
         }
     }
 
-    processOptions(_options);
+    exports.processOptions(_options);
 };
