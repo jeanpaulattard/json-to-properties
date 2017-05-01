@@ -1,0 +1,23 @@
+{
+  "TITLE": "Tom and Kate",
+  "SUBTITLE": "A Busy night",
+  "PAGE1": {
+    "PAR1": {
+      "S1": "Tom and Kate were sitting at the table eating.",
+      "S2": "Their mother was busy getting their lunch boxes ready, so they were talking to their father"
+    },
+    "PAR2": {
+      "S1": "\"You are slow today, Tom and Kate,\" said their mother.",
+      "S2": "\"You will have to stop talking and eat up your apples and drink your milk.\""
+    },
+    "PAR3": {
+      "S1": "\"Yes\", said Dad.",
+      "S2": {
+        "KATE": "\"Eat up that apple quickly, Kate.\"",
+        "TOM": "\"And Tom, you still have some milk left. You two are very slow today.\""
+      },
+      "S3": "Mother took two red apples.",
+      "S4": "She put one apple in Kate's lunch box, and the other in Tom's lunch box."
+    }
+  }
+}
