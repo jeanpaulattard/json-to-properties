@@ -40,6 +40,45 @@ describe('processor', function () {
                 assert(files.writeAsProperties.calledWith('dist/path', 'file2.json', [ 'entry1', 'entry2' ]));
             });
         });
+
+
+        describe('reverse === true', function () {
+            var opts = {
+                reverse: true,
+                config: { src: 'src/path', dist: 'dist/path' },
+                spaces: 2
+            };
+
+            it('Should retrieve the properties files in the src directory', function () {
+                files.getPropertiesFiles = sinon.stub().returns([]);
+
+                processor.processOptions(opts);
+                assert(files.getPropertiesFiles.calledWith('src/path'));
+            });
+
+            it('Should convert the properties files into json files', function (done) {
+                files.getPropertiesFiles = sinon.stub().returns([ 'file1.properties', 'file2.properties' ]);
+
+                var promise = Promise.resolve([ 'line1', 'line2' ]);
+                files.getFileDataAsLines = sinon.stub().returns(promise);
+                files.writeAsJson = sinon.spy();
+
+                JSON.stringify = sinon.stub().returns('somevalue');
+                parser.inflate = sinon.stub().returns({ key: 'value' });
+
+                processor.processOptions(opts);
+                promise.then(function () {
+                    assert(JSON.stringify.calledWith({ key: 'value' }, null, 2));
+                    assert(parser.inflate.calledWith([ 'line1', 'line2' ]));
+
+                    assert(files.writeAsJson.calledWith('dist/path', 'file1.properties', 'somevalue'));
+                    assert(files.writeAsJson.calledWith('dist/path', 'file2.properties', 'somevalue'));
+                }).then(done, done);
+
+                assert(files.getFileDataAsLines.calledWith('src/path', 'file1.properties'));
+                assert(files.getFileDataAsLines.calledWith('src/path', 'file2.properties'));
+            });
+        });
     });
 
     describe('process', function () {
@@ -51,7 +90,7 @@ describe('processor', function () {
             var defaultOpts = {
                 config: { src: 'some/path', dist: 'some/path' },
                 reverse: false,
-                timestamp: false
+                spaces: 4
             };
             assert(processor.processOptions.calledWith(defaultOpts));
         });
@@ -63,7 +102,7 @@ describe('processor', function () {
             var opts = {
                 config: { src: 'path/one', dist: 'path/two' },
                 reverse: false,
-                timestamp: false
+                spaces: 4
             };
             assert(processor.processOptions.calledWith(opts));
         });

@@ -7,12 +7,17 @@ var processor = require('./scripts/processor');
 
 program
     .option('-r, --reverse', 'Perform the reverse process, creating a json structure from a .properties file')
+    .option('-s, --spaces <spaces>', 'The amount of spaces per line during the properties to json conversion. Defaults to 4.')
     .option('-c, --config <config>', 'A file in json format having a src and dist attribute, pointing to the source directory where the input files are located, and a destination directory where the output files are written.')
     .parse(process.argv);
 
 var options = {};
 if (program.reverse) {
     options.reverse = true;
+}
+
+if (program.spaces) {
+    options.spaces = +program.spaces;
 }
 
 if (program.config) {

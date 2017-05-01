@@ -23,12 +23,20 @@ exports.processOptions = function (options) {
             jsonFiles.forEach(function (file) {
                 var data = files.getFileDataAsString(config.src, file); // Read the file data as utf8 encoded string
                 var entries = parser.deflate(JSON.parse(data)); // Convert the JSON structure into an array of strings
-                files.writeAsProperties(config.dist, file, entries); // Writes the parsed result within the source
-                                                                     // directory.
+                files.writeAsProperties(config.dist, file, entries); // Writes the parsed result to the dist directory
             });
         }
     } else {
-        console.log('Reversal coming soon...');
+        var propertiesFiles = files.getPropertiesFiles(config.src);
+        if (propertiesFiles) {
+            propertiesFiles.forEach(function (file) {
+                var promise = files.getFileDataAsLines(config.src, file);
+                promise.then(function (lines) {
+                    var inflated = parser.inflate(lines);
+                    files.writeAsJson(config.dist, file, JSON.stringify(inflated, null, options.spaces));
+                });
+            });
+        }
     }
 };
 
@@ -51,11 +59,11 @@ exports.process = function (options) {
     var _options = {
         config: { src: path, dist: path },
         reverse: false,
-        timestamp: false
+        spaces: 4
     };
 
     for (var key in options) {
-        if (options.hasOwnProperty(key)) {
+        if (options.hasOwnProperty(key) && options[ key ]) {
             _options[ key ] = options[ key ];
         }
     }
