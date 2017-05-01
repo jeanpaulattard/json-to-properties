@@ -1,5 +1,7 @@
 # json-to-properties
 
+[![npm version](https://badge.fury.io/js/json-to-properties.svg)](https://badge.fury.io/js/json-to-properties)
+
 A util to convert files in .json format into .properties format, and vice versa.
 
 ## Installation
