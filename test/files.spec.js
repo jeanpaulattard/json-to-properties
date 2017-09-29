@@ -53,7 +53,7 @@ describe('files', function () {
             fs.existsSync = sinon.stub().returns(false);
 
             files.getFileDataAsString('some/dir', 'file.json');
-            assert(fs.existsSync.calledWith('some/dir\\file.json'));
+            assert(fs.existsSync.calledWith('some/dir/file.json'));
         });
 
         it('Should log an error and return if the resolved file is nonexistent', function () {
@@ -61,7 +61,7 @@ describe('files', function () {
             console.error = sinon.spy();
 
             assert.equal(files.getFileDataAsString('some/dir', 'file.json'), undefined);
-            assert(console.error.calledWith('The file identified by the full path [ some/dir\\file.json ] is not found.'))
+            assert(console.error.calledWith('The file identified by the full path [ some/dir/file.json ] is not found.'))
         });
 
         it('Should return a utf8 encoded string representing the content of the file', function () {
@@ -69,7 +69,7 @@ describe('files', function () {
             fs.readFileSync = sinon.stub().returns('utf8 content');
 
             assert.equal(files.getFileDataAsString('some/dir', 'file.json'), 'utf8 content');
-            assert(fs.readFileSync.calledWith('some/dir\\file.json', 'utf8'));
+            assert(fs.readFileSync.calledWith('some/dir/file.json', 'utf8'));
         });
     });
 
@@ -78,7 +78,7 @@ describe('files', function () {
             fs.existsSync = sinon.stub().returns(false);
 
             files.getFileDataAsLines('some/dir', 'file.properties');
-            assert(fs.existsSync.calledWith('some/dir\\file.properties'));
+            assert(fs.existsSync.calledWith('some/dir/file.properties'));
         });
 
         it('Should log an error and return if the resolved file is nonexistent', function () {
@@ -86,7 +86,7 @@ describe('files', function () {
             console.error = sinon.spy();
 
             assert.equal(files.getFileDataAsLines('some/dir', 'file.properties'), undefined);
-            assert(console.error.calledWith('The file identified by the full path [ some/dir\\file.properties ] is not found.'))
+            assert(console.error.calledWith('The file identified by the full path [ some/dir/file.properties ] is not found.'))
         });
 
         it('Should resolve the returned promise with the file lines once it completes', function (done) {
@@ -110,7 +110,7 @@ describe('files', function () {
                 assert.deepEqual(items, [ 'some line', 'some line' ]);
             }).then(done, done);
 
-            assert(fs.createReadStream.calledWith('some/dir\\file.properties'));
+            assert(fs.createReadStream.calledWith('some/dir/file.properties'));
             assert(readline.createInterface.calledWith({ input: 'astream' }));
         });
     });
@@ -133,7 +133,7 @@ describe('files', function () {
             });
 
             files.writeAsProperties('some/dir', 'file.json', []);
-            assert(fs.createWriteStream.calledWith('some/dir\\file.properties', { autoClose: false }));
+            assert(fs.createWriteStream.calledWith('some/dir/file.properties', { autoClose: false }));
         });
 
         it('Should write each item on the entries array to the file', function () {
@@ -187,7 +187,7 @@ describe('files', function () {
             });
 
             files.writeAsJson('some/dir', 'file.properties', []);
-            assert(fs.createWriteStream.calledWith('some/dir\\file.json', { autoClose: false }));
+            assert(fs.createWriteStream.calledWith('some/dir/file.json', { autoClose: false }));
         });
 
         it('Should write the provided json string to the file', function () {

@@ -50,7 +50,7 @@ exports.getPropertiesFiles = function (dir) {
  * @returns The file data represented as a utf8 encoded string
  */
 exports.getFileDataAsString = function (dir, file) {
-    var fullPath = dir + '\\' + file;
+    var fullPath = dir + '/' + file;
     if (!fs.existsSync(fullPath)) {
         console.error('The file identified by the full path [ ' + fullPath + ' ] is not found.');
         return;
@@ -69,7 +69,7 @@ exports.getFileDataAsString = function (dir, file) {
  *     where each line represents a line entry within the file
  */
 exports.getFileDataAsLines = function (dir, file) {
-    var fullPath = dir + '\\' + file;
+    var fullPath = dir + '/' + file;
     if (!fs.existsSync(fullPath)) {
         console.error('The file identified by the full path [ ' + fullPath + ' ] is not found.');
         return;
@@ -109,7 +109,7 @@ exports.writeAsProperties = function (dir, file, entries) {
     }
 
     var fileName = file.substr(0, file.length - 5); // Omit the .json extension from the file name
-    var writeStream = fs.createWriteStream(dir.concat('\\').concat(fileName.concat('.properties')), {
+    var writeStream = fs.createWriteStream(dir.concat('/').concat(fileName.concat('.properties')), {
         autoClose: false
     });
 
@@ -134,7 +134,7 @@ exports.writeAsJson = function (dir, file, json) {
     }
 
     var fileName = file.substr(0, file.length - 11); //Omit the .properties extension from the file name
-    var writeStream = fs.createWriteStream(dir.concat('\\').concat(fileName.concat('.json')), {
+    var writeStream = fs.createWriteStream(dir.concat('/').concat(fileName.concat('.json')), {
         autoClose: false
     });
 

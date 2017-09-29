@@ -1,0 +1,5 @@
+# Set the default behavior, in case people don't have core.autocrlf set.
+* text=auto
+
+# Git will always convert line endings to LF on checkout. You should use this for files that must keep LF endings, even on Windows.
+*.js text eol=lf
