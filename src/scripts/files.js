@@ -154,7 +154,7 @@ exports.writeAsJson = function (dir, file, json) {
         return;
     }
 
-    var fileName = exports.stripExtension(file); // Omit the file extension
+    var fileName = stripExtension(file); // Omit the file extension
     var writeStream = fs.createWriteStream(dir.concat('/').concat(fileName.concat('.json')), {
         autoClose: false
     });
