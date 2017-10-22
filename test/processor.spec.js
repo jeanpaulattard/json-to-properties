@@ -90,7 +90,8 @@ describe('processor', function () {
             var defaultOpts = {
                 config: { src: 'some/path', dist: 'some/path' },
                 reverse: false,
-                spaces: 4
+                spaces: 4,
+                merge: ''
             };
             assert(processor.processOptions.calledWith(defaultOpts));
         });
@@ -102,7 +103,8 @@ describe('processor', function () {
             var opts = {
                 config: { src: 'path/one', dist: 'path/two' },
                 reverse: false,
-                spaces: 4
+                spaces: 4,
+                merge: ''
             };
             assert(processor.processOptions.calledWith(opts));
         });
