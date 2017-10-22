@@ -24,8 +24,9 @@ if (program.spaces) {
 if (program.merge) {
     // If no file name was provided, program.merge has value 'true'
     if (typeof program.merge === 'boolean') {
-        console.log('No file name was provided when using the -m, --merge option. Defaulting to bundle.properties...');
-        options.merge = 'bundle.properties';
+        var fileName = 'bundle.properties';
+        console.log('No file name was provided when using the -m, --merge option. Defaulting to %s...', fileName);
+        options.merge = fileName;
     } else {
         options.merge = program.merge;
     }
