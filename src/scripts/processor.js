@@ -1,5 +1,6 @@
 var files = require('./files');
 var parser = require('./parser');
+var merger = require('./merger');
 
 /**
  * Executes the conversion process. Depending on the given config, .json files are deflated into .properties  or
@@ -16,6 +17,8 @@ var parser = require('./parser');
  */
 exports.processOptions = function (options) {
     var config = options.config;
+    // Create a merger object to register items to
+    var _merger = new merger.Merger();
 
     if (!options.reverse) {
         var jsonFiles = files.getJsonFiles(config.src); // Get all the json file names in the src directory
@@ -24,7 +27,15 @@ exports.processOptions = function (options) {
                 var data = files.getFileDataAsString(config.src, file); // Read the file data as utf8 encoded string
                 var entries = parser.deflate(JSON.parse(data)); // Convert the JSON structure into an array of strings
                 files.writeAsProperties(config.dist, file, entries); // Writes the parsed result to the dist directory
+
+                // Register the file and its deflated entries to the merger.
+                _merger.addCollection(file, entries);
             });
+        }
+
+        // If the option to merge is specified, proceed with the merging process.
+        if (options.merge) {
+            _merger.merge(config.dist, options.merge);
         }
     } else {
         var propertiesFiles = files.getPropertiesFiles(config.src);
@@ -59,7 +70,8 @@ exports.process = function (options) {
     var _options = {
         config: { src: path, dist: path },
         reverse: false,
-        spaces: 4
+        spaces: 4,
+        merge: '' // Defaults to no merge
     };
 
     for (var key in options) {

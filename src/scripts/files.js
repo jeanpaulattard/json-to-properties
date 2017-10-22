@@ -24,6 +24,27 @@ var getFiles = function (dir, extension) {
 };
 
 /**
+ * The removes the .json or .properties extension from the given file name and returns the result.
+ *
+ * @param fileName The file name to remove the extension from
+ * @returns A string representing the file name without an extension
+ */
+stripExtension = function (fileName) {
+    // If the fileName is not provided, something's wrong. Report a bug!!
+    if (!fileName) {
+        throw new Error('No file name was specified.');
+    }
+
+    if (fileName.indexOf('.json') !== -1) {
+        return fileName.substr(0, fileName.length - 5); // Omit the .json extension from the file name
+    } else if (fileName.indexOf('.properties') !== -1) {
+        return fileName.substr(0, fileName.length - 11); //Omit the .properties extension from the file name
+    }
+
+    return fileName;
+};
+
+/**
  * Returns an array of file names ending in .json found in the specified directory.
  *
  * @param dir The directory from where the files should be returned
@@ -108,7 +129,7 @@ exports.writeAsProperties = function (dir, file, entries) {
         return;
     }
 
-    var fileName = file.substr(0, file.length - 5); // Omit the .json extension from the file name
+    var fileName = stripExtension(file); // Omit the file extension
     var writeStream = fs.createWriteStream(dir.concat('/').concat(fileName.concat('.properties')), {
         autoClose: false
     });
@@ -133,7 +154,7 @@ exports.writeAsJson = function (dir, file, json) {
         return;
     }
 
-    var fileName = file.substr(0, file.length - 11); //Omit the .properties extension from the file name
+    var fileName = exports.stripExtension(file); // Omit the file extension
     var writeStream = fs.createWriteStream(dir.concat('/').concat(fileName.concat('.json')), {
         autoClose: false
     });
