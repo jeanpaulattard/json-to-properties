@@ -19,6 +19,10 @@ exports.Merger = function Merger() {
             var file = collection.file;
             var prefix = file.substr(0, file.length - 5); // Omit the .json extension from the file name
 
+            // Replace any .s in the generated prefix with underscores... This is required such that the reverse
+            // process does not break and retains the original prefixes.
+            prefix = prefix.replace(/\./g, '_');
+
             if (collection.items) {
                 collection.items.forEach(function (item) {
                     items.push(prefix.toUpperCase().concat('.').concat(item));
