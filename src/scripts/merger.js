@@ -1,4 +1,6 @@
-var files = require('./files');
+var files = require('./files'),
+    parser = require('./parser'),
+    fs = require('fs');
 
 exports.Merger = function Merger() {
     this.collections = [];
@@ -31,5 +33,31 @@ exports.Merger = function Merger() {
         });
 
         files.writeAsProperties(dir, file, items);
+    };
+
+    /**
+     * Unpacks a properties file having merged content where each first level key represents a language. Each group of
+     * languages is extracted into its own json files.
+     *
+     * For the sake of not overriding other json files written as a bi-product of the standard reverse process, the
+     * json files obtained as part of this reverse process have appended with a  suffix.
+     *
+     * @param src The src directory of the bundled properties file
+     * @param dist The destination directory where to write the resultant json files.
+     * @param file The name of the bundled properties file
+     * @param spaces The value to provide to the JSON.stringify method
+     */
+    this.reverse = function (src, dist, file, spaces) {
+        var promise = files.getFileDataAsLines(src, file);
+        promise.then(function (lines) {
+            var jsonCollection = parser.inflate(lines);
+
+            // Traverse the first level keys... These should be equivalent to the expected language file names
+            var keys = Object.keys(jsonCollection);
+            keys.forEach(function (key) {
+                var fileName = key.toLowerCase().concat('_rm');
+                files.writeAsJson(dist, fileName, JSON.stringify(jsonCollection[ key ], null, spaces));
+            });
+        });
     };
 };

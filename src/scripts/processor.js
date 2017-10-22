@@ -41,12 +41,22 @@ exports.processOptions = function (options) {
         var propertiesFiles = files.getPropertiesFiles(config.src);
         if (propertiesFiles) {
             propertiesFiles.forEach(function (file) {
+                // Do not convert the source merge file to json
+                if (options.merge === file) {
+                    return;
+                }
+
                 var promise = files.getFileDataAsLines(config.src, file);
                 promise.then(function (lines) {
                     var inflated = parser.inflate(lines);
                     files.writeAsJson(config.dist, file, JSON.stringify(inflated, null, options.spaces));
                 });
             });
+        }
+
+        // Reverse any merged files in their own json files
+        if (options.merge) {
+            _merger.reverse(config.src, config.dist, options.merge, options.spaces);
         }
     }
 };
