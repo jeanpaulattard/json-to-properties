@@ -1,6 +1,6 @@
 {
   "name": "json-to-properties",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A standalone utility to transform language files in JSON format into .properties files, and languages files in .properties format into JSON format.",
   "main": "src/index.js",
   "scripts": {
