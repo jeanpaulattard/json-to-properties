@@ -1,4 +1,5 @@
 var merger = require('../src/scripts/merger'),
+    parser = require('../src/scripts/parser'),
     files = require('../src/scripts/files'),
     sinon = require('sinon'),
     assert = require('assert');
@@ -45,6 +46,47 @@ describe('merger', function () {
                 'ZH_TW.value1',
                 'ZH_TW.value2'
             ]));
+        });
+    });
+
+    describe('reverse', function () {
+        it('Should write as json the children of the first level keys', function (done) {
+            var lines = [ 'line1', 'line2' ];
+            var promise = Promise.resolve(lines);
+            var dataLinesStub = sinon.stub(files, 'getFileDataAsLines').returns(promise);
+
+            files.writeAsJson = sinon.spy();
+
+            var inflated = {
+                en: { key1: 'hello' },
+                IT: { key1: 'ciao' }
+            };
+
+            var inflateStub = sinon.stub(parser, 'inflate').returns(inflated);
+
+            var dist = 'my/dist';
+            var src = 'my/src';
+            var file = 'bundle.properties';
+            var spaces = 2;
+
+            var jsonStub = sinon.stub(JSON, 'stringify').returns('stringifiedstring');
+
+            var _merger = new merger.Merger();
+            _merger.reverse(src, dist, file, spaces);
+
+            promise.then(function () {
+                assert(dataLinesStub.calledWith(src, file));
+                assert(inflateStub.calledWith(lines));
+
+                assert(jsonStub.calledWith(inflated.en, null, spaces));
+                assert(jsonStub.calledWith(inflated.IT, null, spaces));
+
+                assert(files.writeAsJson.calledWith(dist, 'en_rm', 'stringifiedstring'));
+                assert(files.writeAsJson.calledWith(dist, 'it_rm', 'stringifiedstring'));
+
+                dataLinesStub.restore();
+                parser.inflate.restore();
+            }).then(done, done);
         });
     });
 });
