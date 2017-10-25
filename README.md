@@ -150,7 +150,7 @@ and
 }
 ```
 
-_Note that the generated json files are suffixed with **_rm** not to override other .json files that could be a result of the standard behavior of the reverse process._
+_Note that the generated json files are suffixed with **_rm** not to override other .json files having the same name (in this case, `en.json` and `it.json`) that could be a result of the standard behavior of the reverse process._
 
 ## Try It
 
