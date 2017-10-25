@@ -132,7 +132,7 @@ IT.KEY1=Salve signore
 IT.KEY2=Com'è la tua giornata?
 ```
 
-will result in two files, `en.json` and `it.json`, having the below content respectively.
+will result in two files, `en_rm.json` and `it_rm.json`, having the below content respectively.
 
 ```
 {
@@ -149,6 +149,8 @@ and
     "KEY2": "Com'è la tua giornata?"
 }
 ```
+
+_Note that the generated json files are suffixed with **_rm** not to override other .json files that could be a result of the standard behavior of the reverse process._
 
 ## Try It
 
