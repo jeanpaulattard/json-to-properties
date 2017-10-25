@@ -91,9 +91,9 @@ Running the util with the `-m, --merge` option bundles the generated `.propertie
 
 ##### Example
 
-`json-to-properties -m` bundles the content in a file named bundle.properties
+`json-to-properties -m` bundles the content in a file named `bundle.properties`
 
-`json-to-properties -m mynewbundle.properties` bundles the content in a file named mynewbundle.properties
+`json-to-properties -m mynewbundle.properties` bundles the content in a file named `mynewbundle.properties`
 
 Having two files `en.json` and `it.json` both containing the json content below
 
