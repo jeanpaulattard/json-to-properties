@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/json-to-properties.svg)](https://badge.fury.io/js/json-to-properties)
 
-A util to convert files in .json format into .properties format, and vice versa.
+A util to convert files having a `.json` format into `.properties` format, and vice versa.
 
 ## Installation
 
@@ -10,7 +10,7 @@ A util to convert files in .json format into .properties format, and vice versa.
 
 ## Usage
 
-Running `json-to-properties` will convert any .json file that are found in the current directory, into to .properties.
+Running `json-to-properties` will convert any `.json` files that are found in the current directory, into to `.properties` files.
 
 Example
 
@@ -23,7 +23,7 @@ Example
 }
 ```
 
-result into a file containing
+result in a file containing
 
 ```
 KEY1.KEY2=Hello
@@ -36,11 +36,11 @@ Various options are supported, including
 
 ### -c, --config
 
-Running the util with -c expects a config file in .json format containing two attributes: `src` and `dist`, where 
+Running the util with -c expects a config file in `.json` format containing two attributes: `src` and `dist`, where 
 - `src` points to the directory containing the files to process and 
 - `dist` points to the directory where the output files will be written
 
-Example config.json
+Example `config.json`
 
 ```
 {
@@ -55,7 +55,7 @@ and run with
 
 ### -r, --reverse
 
-Performs the reversal process, converting .properties files into .json files.
+Performs the reversal process, converting `.properties` files into `.json` files.
 
 Example 
 ```
@@ -77,7 +77,7 @@ result into a file containing
 
 ### -s, --spaces
 
-Accepts a number value identifying the number of spaces used within the output .json file. This is used in relation with `-r`
+Accepts a number value identifying the number of spaces used within the output .json file. This is used in relation with `-r, --reverse`
 
 Run using 
 
@@ -87,7 +87,7 @@ will use 4 spaces for each indented hierarchy.
 
 ### -m, --merge
 
-Running the util with the -m, --merge option bundles the generated properties files into one file of a given name, or bundle.properties if none is specified. The content of the bundled file are prefixed with the name of the original file.
+Running the util with the `-m, --merge` option bundles the generated `.properties` files into one file of a given name, or `bundle.properties` if none is specified. The content of the bundled file are prefixed with the name of the original file.
 
 ##### Example
 
@@ -117,7 +117,7 @@ _Note that the standard behavior is preserved, thus two properties files `en.pro
 
 #### Use of merge in conjunction with -r, --reverse option
 
-The merge process can also be combined with the -r, -reverse flag, where the specified file (or bundle.properties if none is specified) is expanded into separate json files whose name is equivalent to the first part of a key.
+The merge process can also be combined with the `-r, -reverse` flag, where the specified file (or `bundle.properties` if none is specified) is expanded into separate json files whose name is equivalent to the first part of a key.
 
 ##### Example
 
@@ -154,4 +154,4 @@ _Note that the generated json files are suffixed with **_rm** not to override ot
 
 ## Try It
 
-The `sample` folder contains both .json and .properties fileS to download and test on.
+The `sample` folder contains both .json and .properties files to download and test on.
