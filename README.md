@@ -121,7 +121,7 @@ The merge process can also be combined with the -r, -reverse flag, where the spe
 
 ##### Example
 
-`json-to-properties -m` or `json-to-properties -rm`
+`json-to-properties -r -m` or `json-to-properties -rm`
 
 Having a bundle file `bundle.properties` with the below content
 
