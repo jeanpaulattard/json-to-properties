@@ -14,13 +14,13 @@ exports.deflate = function (json, prefix) {
     keys.forEach(function (key) {
         var _prefix;
 
-        if (typeof json[ key ] === 'object') {
+        if (json[key] && typeof json[ key ] === 'object') {
             var _currPrefix = key.concat('.');
             _prefix = prefix ? prefix.concat(_currPrefix) : _currPrefix;
             result = result.concat(exports.deflate(json[ key ], _prefix));
         } else {
             _prefix = prefix ? prefix.concat(key) : key;
-            result.push(_prefix.concat('=').concat(json[ key ]));
+            result.push(_prefix.concat('=').concat(json[ key ] || ''));
         }
     });
 
