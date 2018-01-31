@@ -12,6 +12,14 @@ describe('parser', function () {
             assert.deepEqual(parser.deflate(input), [ 'A=1', 'B=2' ]);
         });
 
+        it('{ A:null } => [ "A=" ]', function () {
+            var input = {
+                A: null
+            };
+
+            assert.deepEqual(parser.deflate(input), [ 'A=' ]);
+        });
+
         it('{ A: { B: 1, C:2 } } => [ "A.B=1", "A.C=2" ]', function () {
             var input = { A: { B: 1, C: 2 } };
 
@@ -34,6 +42,17 @@ describe('parser', function () {
     });
 
     describe('inflate', function () {
+
+        it('[ "A=" ] => { A:"" }', function () {
+            var input = [ 'A=' ];
+
+            var output = {
+                A: ""
+            };
+
+            assert.deepEqual(parser.inflate(input), output);
+        });
+
         it('[ "A=1","B=2"] => { A:"1", B:"2"}', function () {
             var input = [ 'A=1', 'B=2' ];
 
