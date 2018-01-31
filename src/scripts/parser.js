@@ -20,7 +20,16 @@ exports.deflate = function (json, prefix) {
             result = result.concat(exports.deflate(json[ key ], _prefix));
         } else {
             _prefix = prefix ? prefix.concat(key) : key;
-            result.push(_prefix.concat('=').concat(json[ key ]));
+            var value = json[key];
+            if (typeof value === 'string'
+                && (value === "null"
+                    || value === "true"
+                    || value === "false"
+                    || isNumeric(value)
+                )) {
+                value = '"' + value + '"';
+            }
+            result.push(_prefix.concat('=').concat(value));
         }
     });
 
@@ -56,12 +65,26 @@ exports.deflate = function (json, prefix) {
  * @returns {{}}
  */
 var inflateItem = function (keys, value, result) {
+    var key = keys[ 0 ];
+    var index = Number.parseInt(key);
+    if (Number.isInteger(index)) {
+        key = index;
+        if (Object.keys(result).length === 0 && result.constructor === Object) {
+            result = [];
+        }
+    }
+
     if (keys.length === 1) {
-        var key = keys[ 0 ];
+        if (value === '"null"'
+            || value === '"true"'
+            || value === '"false"'
+            || (value.length >= 3 && value.startsWith('"')) && isNumeric(value.substring(1, value.length - 1))
+        ) {
+            value = value.substring(1, value.length - 1);
+        }
         result[ key ] = value;
         return result;
     } else {
-        var key = keys[ 0 ];
         result[ key ] = inflateItem(keys.slice(1), value, result[ key ] || {});
         return result;
     }
@@ -73,6 +96,13 @@ exports.inflate = function (lines) {
         var divider = line.indexOf('='); // Identify the index of the first occurrence of the = symbol
         var key = line.slice(0, divider); // Extract the key from the line
         var value = line.slice(divider + 1); // Extract the content of the line, and exclude the divider
+        // Use the JSON value instead of a string if the value is one of the following
+        if (value === "null"
+            || value === "true"
+            || value === "false"
+            || isNumeric(value)) {
+                value = JSON.parse(value);
+        }
 
         var keys = key.split('.');
         inflateItem(keys, value, result);
@@ -80,3 +110,7 @@ exports.inflate = function (lines) {
 
     return result;
 };
+
+function isNumeric(value) {
+    return (+value === +value && +parseFloat(value) === +parseFloat(value));
+}
