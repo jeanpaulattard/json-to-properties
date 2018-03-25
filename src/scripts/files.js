@@ -104,9 +104,10 @@ exports.getFileDataAsLines = function (dir, file) {
     var lines = [];
     reader.on('line', function (line) {
         // Skip comments lines (lines starting with #) and empty lines
-        if (line && (line.charAt(0) === '#' || line.charAt(0) === '!' || line.trim().length === 0)) {
+        if (!line || line.charAt(0) === '#' || line.charAt(0) === '!' || line.trim().length === 0) {
             return;
         }
+
         lines.push(line);
     });
 

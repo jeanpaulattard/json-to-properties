@@ -144,7 +144,8 @@ describe('files', function () {
                 on: function (cmd, callback) {
                     switch (cmd) {
                         case 'line':
-                            callback('             ');
+                            callback('    ');
+                            callback('');
                             callback('This is a valid line');
                             break;
                         case 'close':
