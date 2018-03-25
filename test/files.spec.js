@@ -113,6 +113,51 @@ describe('files', function () {
             assert(fs.createReadStream.calledWith('some/dir/file.properties'));
             assert(readline.createInterface.calledWith({ input: 'astream' }));
         });
+
+        it('Should not include comment lines; lines starting with a # or ! in the returned list of items', function (done) {
+            fs.existsSync = sinon.stub().returns(true);
+            fs.createReadStream = sinon.stub().returns('astream');
+            readline.createInterface = sinon.stub().returns({
+                on: function (cmd, callback) {
+                    switch (cmd) {
+                        case 'line':
+                            callback('#This is a comment');
+                            callback('!This is a comment');
+                            callback('This is a valid line');
+                            break;
+                        case 'close':
+                            callback();
+                            break;
+                    }
+                }
+            });
+
+            files.getFileDataAsLines('some/dir', 'file.properties').then(function (items) {
+                assert.deepEqual(items, [ 'This is a valid line' ]);
+            }).then(done, done);
+        });
+
+        it('Should not include empty lines', function (done) {
+            fs.existsSync = sinon.stub().returns(true);
+            fs.createReadStream = sinon.stub().returns('astream');
+            readline.createInterface = sinon.stub().returns({
+                on: function (cmd, callback) {
+                    switch (cmd) {
+                        case 'line':
+                            callback('             ');
+                            callback('This is a valid line');
+                            break;
+                        case 'close':
+                            callback();
+                            break;
+                    }
+                }
+            });
+
+            files.getFileDataAsLines('some/dir', 'file.properties').then(function (items) {
+                assert.deepEqual(items, [ 'This is a valid line' ]);
+            }).then(done, done);
+        });
     });
 
     describe('writeAsProperties', function () {
