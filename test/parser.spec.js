@@ -39,6 +39,45 @@ describe('parser', function () {
             var output = [ 'A=1', 'B.C.D=2', 'B.C.E=3', 'B.F=4', 'B.G.H=5', 'B.G.I=6' ];
             assert.deepEqual(parser.deflate(input), output);
         });
+
+        it('{ A: 1, B: { C: 2, C.D: 3, C.E: { F: 4 }, C.J: { K: 5, L: 6, L.M: 7, L.N: 8, L.N.I: { Z: 9 } } }'
+            + ' => ' +
+            '[ "A=1", "B.C=2", "B.C.D=3", "B.C.E.F=4", "B.C.J.K=5", "B.C.J.L=6", "B.C.J.L.M=7", "B.C.J.L.N=8", "B.C.J.L.N.I.Z=9" ]',
+            function () {
+
+                var output = [
+                    'A=1',
+                    'B.C=2',
+                    'B.C.D=3',
+                    'B.C.E.F=4',
+                    'B.C.J.K=5',
+                    'B.C.J.L=6',
+                    'B.C.J.L.M=7',
+                    'B.C.J.L.N=8',
+                    'B.C.J.L.N.I.Z=9'
+                ];
+
+                var input = {
+                    A: 1,
+                    B: {
+                        'C': 2,
+                        'C.D': 3,
+                        'C.E': {
+                            'F': 4
+                        },
+                        'C.J': {
+                            'K': 5,
+                            'L': 6,
+                            'L.M': 7,
+                            'L.N': 8,
+                            'L.N.I': {
+                                'Z': 9
+                            }
+                        }
+                    }
+                };
+                assert.deepEqual(parser.deflate(input), output);
+            });
     });
 
     describe('inflate', function () {
@@ -81,6 +120,45 @@ describe('parser', function () {
                     C: { D: 2, E: 3 },
                     F: 4,
                     G: { H: 5, I: 6 }
+                }
+            };
+            assert.deepEqual(parser.inflate(input), output);
+        });
+
+        it('[ "A=1", "B.C.E.F=4", "B.C=2", "B.C.D=3", "B.C.J.K=5", "B.C.J.L=6", "B.C.J.L.M=7", "B.C.J.L.N=8", "B.C.J.L.N.I.Z=9" ]'
+            + ' => ' +
+            '{ A: 1, B: { C: 2, C.D: 3, C.E: { F: 4 }, C.J: { K: 5, L: 6, L.M: 7, L.N: 8, L.N.I: { Z: 9 } } }',
+            function () {
+
+            var input = [
+                'A=1',
+                'B.C.E.F=4',
+                'B.C=2',
+                'B.C.D=3',
+                'B.C.J.K=5',
+                'B.C.J.L=6',
+                'B.C.J.L.M=7',
+                'B.C.J.L.N=8',
+                'B.C.J.L.N.I.Z=9'
+            ];
+
+            var output = {
+                A: 1,
+                B: {
+                    'C': 2,
+                    'C.D': 3,
+                    'C.E': {
+                        'F': 4
+                    },
+                    'C.J': {
+                        'K': 5,
+                        'L': 6,
+                        'L.M': 7,
+                        'L.N': 8,
+                        'L.N.I': {
+                            'Z': 9
+                        }
+                    }
                 }
             };
             assert.deepEqual(parser.inflate(input), output);

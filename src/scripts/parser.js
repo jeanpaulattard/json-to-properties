@@ -56,14 +56,40 @@ exports.deflate = function (json, prefix) {
  * @returns {{}}
  */
 var inflateItem = function (keys, value, result) {
-    if (keys.length === 1) {
-        var key = keys[ 0 ];
-        result[ key ] = value;
-        return result;
+    if (keys.length === 0) {
+        return value;
     } else {
         var key = keys[ 0 ];
-        result[ key ] = inflateItem(keys.slice(1), value, result[ key ] || {});
-        return result;
+        if (typeof result[key] === 'string') {
+            // if we reached a level === string, return array of keys to combine
+            return keys;
+        } else if (typeof result[key] === 'object' && keys.length === 1) {
+            // if we reached a bottom level === object, deflate its properties
+            var r = result[key];
+            for (var k in r) {
+                if (r.hasOwnProperty(k)) {
+                    result[key.concat('.', k)] = r[k];
+                }
+            }
+
+            // and save new property
+            result[key] = value;
+
+            return result;
+        } else {
+            var item = null;
+            do {
+                keys = item === null
+                    ? keys.slice(1) // do recursive insert
+                    : [item.slice(0, 2).join('.')].concat(item.slice(2)); // otherwise if an array was returned,
+                                                                        // combine first two keys into one key for insert
+                item = inflateItem(keys, value, typeof result[ key ] !== 'undefined' ? result[key] : {});
+            } while(Array.isArray(item));
+
+            result[key] = item;
+
+            return result;
+        }
     }
 };
 exports.inflate = function (lines) {
